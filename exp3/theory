@@ -1,0 +1,147 @@
+# EXPERIMENT 3 – SOURCE CODE MANAGEMENT USING GITHUB
+
+## AIM
+To manage the source code of the Event Registration application using Git and GitHub.
+
+## THEORY
+Source code management helps developers track changes, maintain versions, collaborate and restore previous code.
+
+Git tracks changes locally, while GitHub hosts the remote repository.
+
+## STEP 1: Open Experiment 1 project
+
+powershell
+cd "C:\Users\Dell\Desktop\event-registration"
+
+
+## STEP 2: Create .gitignore
+
+powershell
+@"
+node_modules/
+.env
+.DS_Store
+"@ | Set-Content .gitignore
+
+
+This prevents unnecessary files and secrets from being uploaded.
+
+## STEP 3: Initialize Git
+
+powershell
+git init
+
+
+## STEP 4: Add files
+
+powershell
+git add .
+
+
+## STEP 5: Commit
+
+powershell
+git commit -m "Initial commit - Event Registration Application"
+
+
+## STEP 6: Modify the application
+
+Edit public/index.html, add a heading or change some text, and save it.
+
+Then:
+
+powershell
+git status
+
+git add .
+
+git commit -m "Updated registration page"
+
+
+## STEP 7: Create a feature branch
+
+powershell
+git branch feature-update
+
+git switch feature-update
+
+
+Create a file:
+
+powershell
+Set-Content about.txt "Event Registration Application"
+
+
+Commit:
+
+powershell
+git add .
+
+git commit -m "Added about file"
+
+
+## STEP 8: Return to main branch
+
+powershell
+git switch master
+
+
+If your branch is called main, use git switch main.
+
+Check:
+
+powershell
+git branch
+
+git log --oneline
+
+
+## STEP 9: Push to GitHub
+
+1. Open https://github.com
+2. Sign in.
+3. Click New Repository.
+4. Enter repository name: event-registration.
+5. Create the repository without initializing it with another README.
+6. Copy the repository HTTPS URL.
+
+Run these commands, replacing the URL with your own:
+
+powershell
+git remote add origin YOUR_GITHUB_REPOSITORY_URL
+
+git push -u origin master
+
+
+If your branch is main, use:
+
+powershell
+git push -u origin main
+
+
+*Expected output:* Git uploads your commits, and your project files appear on GitHub.
+
+## RESULT
+The Event Registration source code was managed using Git and uploaded to GitHub.
+
+## VIVA
+1. What is source code management?  
+   It is the process of tracking and managing source code changes.
+
+2. What is a remote repository?  
+   A repository hosted on a platform such as GitHub.
+
+3. What is .gitignore?  
+   A file that specifies files Git should ignore.
+
+4. What is git remote add origin?  
+   It connects the local repository to a remote repository.
+
+5. What is the difference between pull and push?  
+   Push uploads local commits; pull downloads and integrates remote changes.
+
+6. Why are branches used?  
+   To develop features independently without directly changing the main branch.
+
+---
+

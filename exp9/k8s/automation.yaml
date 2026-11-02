@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: exp9-automation
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: exp9-automation
+
+  template:
+    metadata:
+      labels:
+        app: exp9-automation
+
+    spec:
+      containers:
+        - name: exp9-container
+          image: exp9-app:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 3000

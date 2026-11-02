@@ -1,0 +1,146 @@
+# EXPERIMENT 7 – DEVELOP A CONTAINERIZED APPLICATION USING DOCKER
+
+## AIM
+To develop and run a containerized Event Registration application using Docker.
+
+## THEORY
+Containerization packages an application and its dependencies into a portable container.
+
+A Dockerfile contains instructions to build a Docker image.
+
+The image can then be used to create and run containers.
+
+## STEP 1: Open the existing project
+
+powershell
+cd "C:\Users\Dell\Desktop\event-registration"
+
+
+## STEP 2: Create Dockerfile
+
+Create a file named exactly Dockerfile without an extension.
+
+dockerfile
+FROM node:24-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install --omit=dev
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
+
+
+## STEP 3: Create .dockerignore
+
+text
+node_modules
+.git
+.env
+
+
+## STEP 4: Test the application locally
+
+powershell
+node server.js
+
+
+Open:
+
+text
+http://localhost:3000
+
+
+Stop the server using Ctrl+C.
+
+## STEP 5: Build Docker image
+
+powershell
+docker build -t external-exp7 . .
+
+
+*Expected output:* Successfully built image.
+
+## STEP 6: Verify image
+
+powershell
+docker images
+
+
+You should see event-registration.
+
+STEP 7: Run the container
+docker run -d --name exp7 -p 3001:3000 external-exp7
+
+
+STEP 8: Verify container
+docker ps
+
+
+You should see the container named exp7 with port mapping 3001->3000.
+STEP 9: Open the application
+Open this URL in your browser:
+
+http://localhost:3001
+
+Test the Event Registration form.
+
+To view API data:
+
+http://localhost:3001/api/registrations
+STEP 10: View logs
+docker logs exp7
+
+
+STEP 11: Stop and start container
+Stop the container:
+docker stop exp7
+
+
+Start the container again:
+docker start exp7
+
+
+Verify:
+docker ps
+
+
+STEP 12: Remove container
+docker stop exp7
+docker rm exp7
+
+
+Important: Keep the Docker image external-exp7. You will need a Docker image for your Kubernetes experiments. Do not run docker rmi.
+RESULT
+The Event Registration application was successfully containerized and executed using Docker.
+## VIVA
+1. What is a Dockerfile?  
+   It is a text file containing instructions to build a Docker image.
+
+2. What is FROM?  
+   It specifies the base image.
+
+3. What is WORKDIR?  
+   It sets the working directory inside the image.
+
+4. What is COPY?  
+   It copies files into the image.
+
+5. What is RUN?  
+   It executes a command during image building.
+
+6. What is EXPOSE?  
+   It documents the port used by the application.
+
+7. What is CMD?  
+   It specifies the default command to run when the container starts.
+
+8. What does -p 3001:3000 mean?  
+   Host port 3001 is mapped to container port 3000.
+
+---

@@ -1,0 +1,95 @@
+# EXPERIMENT 4 – INSTALL AND SET UP JENKINS
+
+## AIM
+To install Jenkins and configure it for automation.
+
+## THEORY
+Jenkins is an open-source automation server used for Continuous Integration and Continuous Delivery.
+
+It automates tasks such as:
+
+- Building applications.
+- Running tests.
+- Deploying applications.
+- Executing scheduled jobs.
+
+## STEP 1: Install prerequisites
+
+Jenkins requires Java.
+
+Check Java:
+
+powershell
+java -version
+
+
+Check Maven:
+
+powershell
+mvn -version
+
+
+## STEP 2: Install Jenkins
+
+1. Visit https://www.jenkins.io/download/
+2. Download the Windows LTS installer.
+3. Run the installer.
+4. Complete the installation.
+5. Open Jenkins in your browser.
+
+text
+http://localhost:8080
+
+
+## STEP 3: Unlock Jenkins
+
+Run PowerShell as required and execute:
+
+powershell
+Get-Content "C:\ProgramData\Jenkins\.jenkins\secrets\initialAdminPassword"
+
+
+Copy the password and paste it into the Jenkins unlock page.
+
+## STEP 4: Configure Jenkins
+
+1. Select Install suggested plugins.
+2. Wait for installation.
+3. Create an administrator account.
+4. Save and finish.
+5. Open the Jenkins dashboard.
+
+## STEP 5: Verify installation
+
+Open:
+
+text
+http://localhost:8080
+
+
+*Expected output:* Jenkins dashboard appears.
+
+## RESULT
+Jenkins was installed and configured successfully.
+
+## VIVA
+1. What is Jenkins?  
+   Jenkins is an open-source automation server.
+
+2. What is CI?  
+   Continuous Integration is the practice of frequently integrating code changes and validating them through automated builds and tests.
+
+3. What is CD?  
+   Continuous Delivery or Continuous Deployment automates the release process.
+
+4. What is a Jenkins job?  
+   A task configured to perform an automated operation.
+
+5. What is a Jenkins plugin?  
+   An extension that adds functionality to Jenkins.
+
+6. What is the default Jenkins port?  
+   8080.
+
+---
+

@@ -1,0 +1,221 @@
+# EXPERIMENT 10 – INSTALL AND EXPLORE KARATE AND SPRING BOOT TESTING
+
+## AIM
+To install and explore Karate and Spring Boot testing frameworks.
+
+## THEORY
+
+*Karate:*
+- Karate is an open-source testing framework.
+- It supports API testing and automation.
+- It uses simple feature files with readable syntax.
+- It can test APIs without writing large amounts of Java code.
+
+*Spring Boot:*
+- Spring Boot is a Java framework used to develop applications.
+- It simplifies application configuration.
+- Spring Boot Test supports testing Spring applications.
+- JUnit is commonly used to write and execute test cases.
+
+## PART A – KARATE SETUP
+
+### STEP 1: Check Java and Maven
+
+powershell
+java -version
+
+mvn -version
+
+
+### STEP 2: Create project
+
+powershell
+cd "C:\Users\Dell\Desktop"
+
+mkdir karate-demo
+
+cd karate-demo
+
+
+### STEP 3: Create Maven pom.xml
+
+xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>examples.demo</groupId>
+    <artifactId>karate-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.intuit.karate</groupId>
+            <artifactId>karate-junit5</artifactId>
+            <version>1.4.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
+
+### STEP 4: Create folders
+
+powershell
+New-Item -ItemType Directory -Force -Path "src\test\java\examples\demo"
+
+New-Item -ItemType Directory -Force -Path "src\test\resources\examples\demo"
+
+
+### STEP 5: Create sample.feature
+
+Location:
+
+src/test/resources/examples/demo/sample.feature
+
+gherkin
+Feature: Exploring Karate Testing
+
+  Scenario: Test addition operation
+    * def a = 10
+    * def b = 20
+    * def result = a + b
+    * match result == 30
+
+  Scenario: Test string value
+    * def message = 'Hello Karate'
+    * match message == 'Hello Karate'
+
+
+### STEP 6: Create KarateTest.java
+
+Location:
+
+src/test/java/examples/demo/KarateTest.java
+
+java
+package examples.demo;
+
+import com.intuit.karate.junit5.Karate;
+
+class KarateTest {
+
+    @Karate.Test
+    Karate testSample() {
+        return Karate.run("sample").relativeTo(getClass());
+    }
+}
+
+
+### STEP 7: Run Karate test
+
+powershell
+mvn clean test
+
+
+*Expected output:*
+
+text
+Tests run: 2
+BUILD SUCCESS
+
+
+The exact Maven output may contain additional details.
+
+## PART B – SPRING BOOT SETUP
+
+### STEP 1: Open Spring Initializr
+
+Visit:
+
+https://start.spring.io/
+
+Choose:
+
+| Option | Value |
+|---|---|
+| Project | Maven |
+| Language | Java |
+| Packaging | Jar |
+| Java | 21 |
+| Group | com.example |
+| Artifact | demo |
+| Name | demo |
+
+Add dependencies:
+
+- Spring Web
+- Spring Boot Test
+
+Generate and extract the project into:
+
+C:\Users\Dell\Desktop\demo
+
+### STEP 2: Open project
+
+powershell
+cd "C:\Users\Dell\Desktop\demo"
+
+
+### STEP 3: Check Maven project
+
+powershell
+mvn test
+
+
+*Expected output:* BUILD SUCCESS if the project is correctly generated and its dependencies are available.
+
+### STEP 4: Understand Spring Boot testing
+
+- @SpringBootTest loads the Spring Boot test context.
+- @Test marks a JUnit test method.
+- assertEquals() compares expected and actual values.
+- assertNotNull() checks that a value is not null.
+
+## RESULT
+Karate and Spring Boot testing environments were explored. Karate test scenarios were executed using Maven.
+
+## VIVA
+1. What is Karate?  
+   Karate is an open-source framework for API testing and automation.
+
+2. What is a feature file?  
+   It is a file containing test scenarios written in readable Gherkin-style syntax.
+
+3. What is Maven?  
+   Maven is a Java build and dependency management tool.
+
+4. What is Spring Boot?  
+   Spring Boot is a framework for building Java applications.
+
+5. What is JUnit?  
+   JUnit is a Java testing framework.
+
+6. What is @Test?  
+   It identifies a method as a test method.
+
+7. What is @SpringBootTest?  
+   It loads the Spring Boot application context for testing.
+
+---

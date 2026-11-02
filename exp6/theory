@@ -1,0 +1,144 @@
+# EXPERIMENT 6 – EXPLORE DOCKER COMMANDS FOR CONTENT MANAGEMENT
+
+## AIM
+To explore Docker commands for managing containers and content.
+
+## THEORY
+Docker is a platform used to build, package and run applications inside containers.
+
+Important terms:
+
+- Image: Read-only template used to create containers.
+- Container: Running instance of an image.
+- Docker Hub: Online image repository.
+- Volume: Persistent storage for container data.
+- Port mapping: Connects a host port to a container port.
+
+## STEP 1: Check Docker
+
+powershell
+docker --version
+
+docker info
+
+
+*Expected output:* Docker version and engine information.
+
+## STEP 2: Download an image
+
+powershell
+docker pull nginx
+
+
+## STEP 3: List images
+
+powershell
+docker images
+
+
+*Expected output:* Nginx image appears.
+
+## STEP 4: Create a container
+
+powershell
+docker run -d --name mynginx -p 8080:80 nginx
+
+
+## STEP 5: List running containers
+
+powershell
+docker ps
+
+
+## STEP 6: Open Nginx
+
+Open:
+
+text
+http://localhost:8080
+
+
+*Expected output:* Welcome to nginx page.
+
+## STEP 7: Copy content into the container
+
+powershell
+Set-Content -Path .\sample.txt -Value "Welcome to Docker Content Management"
+
+
+Copy the file:
+
+powershell
+docker cp .\sample.txt mynginx:/usr/share/nginx/html/sample.txt
+
+
+Open:
+
+text
+http://localhost:8080/sample.txt
+
+
+*Expected output:*
+
+text
+Welcome to Docker Content Management
+
+
+## STEP 8: Explore Docker commands
+
+powershell
+docker ps
+docker ps -a
+docker images
+docker logs mynginx
+docker exec mynginx nginx -v
+docker stats mynginx
+docker pause mynginx
+docker unpause mynginx
+docker stop mynginx
+docker start mynginx
+docker restart mynginx
+
+
+## STEP 9: Remove container and image
+
+powershell
+docker stop mynginx
+
+docker rm mynginx
+
+docker rmi nginx
+
+
+## RESULT
+Docker commands were explored, and content was copied into an Nginx container successfully.
+
+## VIVA
+1. What is Docker?  
+   Docker is a containerization platform.
+
+2. What is a Docker image?  
+   An image is a template used to create containers.
+
+3. What is a container?  
+   A container is an isolated running instance of an image.
+
+4. What is Docker Hub?  
+   It is a repository for sharing Docker images.
+
+5. What does docker pull do?  
+   It downloads an image.
+
+6. What does docker ps do?  
+   It lists running containers.
+
+7. What does docker stop do?  
+   It stops a running container.
+
+8. What does docker rm do?  
+   It removes a container.
+
+9. What does docker cp do?  
+   It copies files between the host and a container.
+
+---

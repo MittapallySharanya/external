@@ -1,0 +1,315 @@
+# EXPERIMENT 12 – DEVELOP SPRING BOOT TEST CASES FOR THE CONTAINERIZED APPLICATION
+
+## AIM
+To develop Spring Boot test cases for the Dockerized Event Registration application.
+
+## THEORY
+
+Spring Boot Test and JUnit are used to write automated test cases.
+
+The Event Registration application runs inside a Docker container.
+
+A separate Spring Boot test project sends HTTP requests to the running application and checks the responses.
+
+In this experiment, Spring Boot is used as the testing client to verify the Node.js application running inside Docker.
+
+**Important:** The Event Registration application is built using Node.js. Spring Boot is used only for testing.
+
+## STEP 1: Create Experiment 12 Folder
+
+Open VS Code PowerShell:
+
+```powershell
+cd "C:\Users\Dell\Desktop\external"
+
+New-Item -ItemType Directory -Force -Path "exp12"
+
+cd "exp12"
+```
+
+## STEP 2: Copy Event Registration Application
+
+Copy the application files from Experiment 7:
+
+```powershell
+Copy-Item "..\exp7\Dockerfile" .
+Copy-Item "..\exp7\.dockerignore" .
+Copy-Item "..\exp7\server.js" .
+Copy-Item "..\exp7\package.json" .
+Copy-Item "..\exp7\package-lock.json" .
+Copy-Item "..\exp7\public" . -Recurse
+```
+
+## STEP 3: Create Spring Boot Project Folders
+
+```powershell
+New-Item -ItemType Directory -Force -Path "src\main\java\com\example\demo"
+
+New-Item -ItemType Directory -Force -Path "src\test\java\com\example\demo"
+```
+
+## STEP 4: Create pom.xml
+
+```powershell
+@'
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.0.9</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.example</groupId>
+    <artifactId>exp12</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>exp12</name>
+    <description>Spring Boot Testing Project</description>
+
+    <properties>
+        <java.version>21</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+'@ | Set-Content "pom.xml"
+```
+
+## STEP 5: Create DemoApplication.java
+
+```powershell
+@'
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+'@ | Set-Content "src\main\java\com\example\demo\DemoApplication.java"
+```
+
+## STEP 6: Create EventRegistrationDockerTest.java
+
+```powershell
+@'
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.NONE
+)
+
+class EventRegistrationDockerTest {
+
+    private final RestTemplate restTemplate =
+        new RestTemplate();
+
+    private final String baseUrl =
+        "http://localhost:3001";
+
+    @Test
+    void testRegistrationAPIStatus() {
+
+        ResponseEntity<String> response =
+            restTemplate.getForEntity(
+                baseUrl + "/api/registrations",
+                String.class
+            );
+
+        assertEquals(
+            HttpStatus.OK,
+            response.getStatusCode()
+        );
+    }
+
+    @Test
+    void testRegistrationAPIResponse() {
+
+        ResponseEntity<String> response =
+            restTemplate.getForEntity(
+                baseUrl + "/api/registrations",
+                String.class
+            );
+
+        assertNotNull(response.getBody());
+
+        assertTrue(
+            response.getBody().trim().startsWith("[")
+        );
+
+        assertTrue(
+            response.getHeaders()
+                .getContentType()
+                .includes(MediaType.APPLICATION_JSON)
+        );
+    }
+}
+'@ | Set-Content "src\test\java\com\example\demo\EventRegistrationDockerTest.java"
+```
+
+## STEP 7: Build Docker Image
+
+```powershell
+docker build -t exp12-app .
+```
+
+Expected: Docker image should build successfully.
+
+## STEP 8: Run Docker Container
+
+```powershell
+docker run -d --name exp12-container -p 3001:3000 exp12-app
+```
+
+Check:
+
+```powershell
+docker ps
+```
+
+## STEP 9: Verify Docker Application
+
+Open the browser:
+
+```text
+http://localhost:3001
+```
+
+To check the API:
+
+```text
+http://localhost:3001/api/registrations
+```
+
+Expected output:
+
+```json
+[]
+```
+
+It may contain previously registered data instead.
+
+## STEP 10: Run Spring Boot Test Cases
+
+Make sure you are inside the `exp12` folder.
+
+```powershell
+mvn test
+```
+
+Expected output if both tests pass:
+
+```text
+Tests run: 2
+Failures: 0
+Errors: 0
+
+BUILD SUCCESS
+```
+
+## STEP 11: Verify Docker Application and Logs
+
+```powershell
+docker ps
+```
+
+```powershell
+docker logs exp12-container
+```
+
+## STEP 12: Stop and Remove Container
+
+```powershell
+docker stop exp12-container
+docker rm exp12-container
+```
+
+Keep the Docker image `exp12-app` if you want to practise again.
+
+## RESULT
+
+Spring Boot test cases were successfully written to verify the status and JSON response of the Dockerized Event Registration application.
+
+## VIVA QUESTIONS
+
+**1. What is Spring Boot Test?**
+
+It is a testing module used to test Spring Boot applications.
+
+**2. What is JUnit?**
+
+JUnit is a framework for writing and running Java tests.
+
+**3. What is RestTemplate?**
+
+It is a Spring class used to make HTTP requests.
+
+**4. What is getForEntity()?**
+
+It sends an HTTP GET request and returns the response as a ResponseEntity.
+
+**5. What is assertEquals()?**
+
+It checks whether two values are equal.
+
+**6. What is assertNotNull()?**
+
+It checks whether an object is not null.
+
+**7. Why do we use Docker here?**
+
+To run the application in an isolated container.
+
+**8. Why do we use port 3001?**
+
+It is the host port mapped to the application's container port 3000.
+
+**9. What is SpringBootTest?**
+
+It is an annotation used to configure a Spring Boot test environment.
+
+**10. What is Maven?**
+
+Maven is a build automation and dependency management tool used for Java projects.

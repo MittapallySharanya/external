@@ -1,0 +1,169 @@
+# EXPERIMENT 2 – EXPLORE GIT AND GITHUB COMMANDS
+
+## AIM
+To explore Git commands and understand version control using Git.
+
+## THEORY
+Git is a distributed version control system used to track changes in source code.
+
+GitHub is an online platform used to store and collaborate on Git repositories.
+
+*Important terms:*
+
+- Repository: Project folder tracked by Git.
+- Commit: Saved version of changes.
+- Branch: Separate line of development.
+- Clone: Copy a remote repository.
+- Push: Upload commits to GitHub.
+- Pull: Download and integrate remote changes.
+
+## STEP 1: Configure Git
+
+powershell
+git --version
+
+git config --global user.name "Your Name"
+
+git config --global user.email "your-email@example.com"
+
+
+Use your own name and email.
+
+## STEP 2: Create a practice folder
+
+powershell
+cd "C:\Users\Dell\Desktop"
+
+mkdir git-practice
+
+cd git-practice
+
+git init
+
+
+*Expected output:*
+
+text
+Initialized empty Git repository
+
+
+## STEP 3: Create a file
+
+powershell
+Set-Content index.html "<h1>Welcome to Git</h1>"
+
+
+## STEP 4: Check repository status
+
+powershell
+git status
+
+
+The file will appear as untracked.
+
+## STEP 5: Add the file
+
+powershell
+git add index.html
+
+
+## STEP 6: Commit the file
+
+powershell
+git commit -m "Initial commit"
+
+
+*Expected output:* A message showing that one file was created.
+
+## STEP 7: Explore Git commands
+
+powershell
+git status
+
+git log
+
+git log --oneline
+
+git branch
+
+git diff
+
+
+## STEP 8: Create a branch
+
+powershell
+git branch feature-update
+
+git branch
+
+
+## STEP 9: Switch branches
+
+powershell
+git switch feature-update
+
+
+Create another file:
+
+powershell
+Set-Content about.txt "Git Branching Demonstration"
+
+
+Add and commit:
+
+powershell
+git add .
+
+git commit -m "Added about file"
+
+
+Switch back:
+
+powershell
+git switch master
+
+
+If your default branch is named main, use git switch main instead.
+
+## STEP 10: Important Git commands
+
+powershell
+git init
+git status
+git add .
+git commit -m "message"
+git log
+git branch
+git switch branch-name
+git diff
+git clone repository-url
+git pull
+git push
+
+
+## RESULT
+Git commands were successfully explored, and a repository with commits and branches was created.
+
+## VIVA
+1. What is Git?  
+   Git is a distributed version control system.
+
+2. What is GitHub?  
+   GitHub is an online platform for hosting Git repositories.
+
+3. What is a commit?  
+   A commit saves a snapshot of project changes.
+
+4. What is a branch?  
+   A branch is an independent line of development.
+
+5. What does git add do?  
+   It stages changes for committing.
+
+6. What does git push do?  
+   It uploads local commits to a remote repository.
+
+7. What does git clone do?  
+   It copies a remote repository to the local computer.
+
+---

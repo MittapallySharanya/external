@@ -1,0 +1,117 @@
+# EXPERIMENT 5 – DEMONSTRATE CI/CD USING JENKINS
+
+## AIM
+To demonstrate Continuous Integration and Continuous Delivery using Jenkins.
+
+## THEORY
+CI/CD automates the software development process.
+
+Typical stages:
+
+1. Code – developer writes code.
+2. Build – application is prepared.
+3. Test – application is tested.
+4. Deploy – application is released.
+
+A Jenkins Freestyle job can execute commands automatically.
+
+## STEP 1: Open Jenkins
+
+text
+http://localhost:8080
+
+
+## STEP 2: Create a job
+
+1. Click New Item.
+2. Enter job name: CI-CD-Demo.
+3. Select Freestyle project.
+4. Click OK.
+
+## STEP 3: Configure the job
+
+1. Open Configure.
+2. Scroll to Build Steps.
+3. Click Add build step.
+4. Select Execute Windows batch command.
+
+Paste:
+
+bat
+echo ==============================
+echo JENKINS CI CD DEMONSTRATION
+echo ==============================
+
+echo Checking Node.js
+node --version
+
+echo Checking NPM
+npm --version
+
+echo Building application
+node -e "console.log('Application build successful')"
+
+echo Running tests
+node -e "console.log('All tests passed successfully')"
+
+echo ==============================
+echo BUILD COMPLETED SUCCESSFULLY
+echo ==============================
+
+
+## STEP 4: Save and build
+
+1. Click Save.
+2. Click Build Now.
+3. Open the build number.
+4. Click Console Output.
+
+*Expected output:*
+
+text
+JENKINS CI CD DEMONSTRATION
+
+Checking Node.js
+v24.18.0
+
+Checking NPM
+11.16.0
+
+Building application
+Application build successful
+
+Running tests
+All tests passed successfully
+
+BUILD COMPLETED SUCCESSFULLY
+
+Finished: SUCCESS
+
+
+The exact version numbers may differ.
+
+*Important:* This experiment demonstrates Jenkins job execution. The node -e commands print success messages; they do not perform a real application build or run a real test suite.
+
+## RESULT
+A Jenkins Freestyle job was created and executed successfully to demonstrate CI/CD automation.
+
+## VIVA
+1. What is a pipeline?  
+   A pipeline is a sequence of automated development stages.
+
+2. What is a build?  
+   A build prepares source code into an executable or deployable form.
+
+3. What is a Jenkins Freestyle project?  
+   It is a Jenkins job that can execute configured build steps.
+
+4. What is Console Output?  
+   It displays the logs generated during a Jenkins build.
+
+5. What does Finished: SUCCESS mean?  
+   The Jenkins job completed successfully.
+
+6. What is Continuous Integration?  
+   It is the frequent integration and validation of code changes.
+
+---

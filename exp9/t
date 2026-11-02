@@ -1,0 +1,243 @@
+# EXPERIMENT 9 – AUTOMATE RUNNING CONTAINERIZED APPLICATIONS USING KUBERNETES
+
+## AIM
+To automate the running and management of containerized applications using Kubernetes.
+
+## THEORY
+
+Kubernetes is a container orchestration platform used to automate the deployment, scaling and management of containerized applications.
+
+It manages containers running inside Pods and ensures that the application runs according to the desired state.
+
+A Kubernetes Deployment maintains the required number of Pod replicas. If a Pod fails or is deleted, Kubernetes automatically creates a replacement Pod.
+
+This feature is called **self-healing**.
+
+Kubernetes also supports scaling, which means increasing or decreasing the number of application replicas based on requirements.
+
+### Important Concepts
+
+1. **Deployment:** Manages the application Pods and maintains the desired number of replicas.
+2. **Replica:** An instance of an application Pod.
+3. **Scaling:** Increasing or decreasing the number of replicas.
+4. **Self-healing:** Automatically replacing failed or deleted Pods.
+5. **Desired State:** The state specified by the user in the Kubernetes configuration file.
+6. **YAML File:** A configuration file used to define Kubernetes resources.
+
+### Commands Used
+
+- `kubectl apply` – Creates or updates Kubernetes resources.
+- `kubectl get pods` – Displays the Pods.
+- `kubectl get deployments` – Displays Deployments.
+- `kubectl scale` – Changes the number of replicas.
+- `kubectl delete pod` – Deletes a Pod.
+- `kubectl logs` – Displays container logs.
+- `kubectl delete` – Deletes Kubernetes resources.
+
+### Working Principle
+
+1. Create a Kubernetes Deployment using a YAML file.
+2. Kubernetes creates two application Pods.
+3. Increase the replicas to four using the scaling command.
+4. Decrease the replicas back to two.
+5. Delete one Pod to demonstrate self-healing.
+6. Kubernetes automatically creates a replacement Pod.
+
+## STEP 1: Open Experiment 9 Folder
+
+Open VS Code PowerShell and execute:
+
+```powershell
+cd "C:\Users\Dell\Desktop\external\exp9"
+```
+
+## STEP 2: Create Kubernetes Folder
+
+```powershell
+New-Item -ItemType Directory -Force -Path "k8s"
+```
+
+## STEP 3: Create automation.yaml
+
+Run this command to create the YAML file with its complete content:
+
+```powershell
+@'
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: exp9-automation
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: exp9-automation
+
+  template:
+    metadata:
+      labels:
+        app: exp9-automation
+
+    spec:
+      containers:
+        - name: exp9-container
+          image: exp9-app:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 3000
+'@ | Set-Content -Path "k8s\automation.yaml"
+```
+
+## STEP 4: Verify Docker Image
+
+```powershell
+docker images
+```
+
+Expected: The `exp9-app` image should be available.
+
+If you have not built the image yet, execute:
+
+```powershell
+docker build -t exp9-app .
+```
+
+## STEP 5: Check Kubernetes Node
+
+```powershell
+kubectl get nodes
+```
+
+Expected: The Docker Desktop Kubernetes node should show `Ready`.
+
+## STEP 6: Apply YAML File
+
+```powershell
+kubectl apply -f k8s/automation.yaml
+```
+
+Expected output:
+
+```text
+deployment.apps/exp9-automation created
+```
+
+## STEP 7: Check Pods
+
+```powershell
+kubectl get pods
+```
+
+Expected: Two Pods should be created and become Running.
+
+## STEP 8: Check Deployment
+
+```powershell
+kubectl get deployments
+```
+
+Expected: Two desired replicas and two available replicas.
+
+## STEP 9: Scale Application to Four Replicas
+
+```powershell
+kubectl scale deployment exp9-automation --replicas=4
+```
+
+Check:
+
+```powershell
+kubectl get pods
+```
+
+Expected: Four Pods.
+
+## STEP 10: Scale Down to Two Replicas
+
+```powershell
+kubectl scale deployment exp9-automation --replicas=2
+```
+
+Check:
+
+```powershell
+kubectl get pods
+```
+
+Expected: Two Pods.
+
+## STEP 11: Demonstrate Self-Healing
+
+First, list the Pods:
+
+```powershell
+kubectl get pods
+```
+
+Copy one Pod name and delete it:
+
+```powershell
+kubectl delete pod YOUR-POD-NAME
+```
+
+Replace `YOUR-POD-NAME` with the actual Pod name.
+
+Check again:
+
+```powershell
+kubectl get pods
+```
+
+Expected output: Kubernetes creates a replacement Pod to maintain two replicas.
+
+## STEP 12: View Logs
+
+```powershell
+kubectl logs deployment/exp9-automation
+```
+
+## STEP 13: Delete Deployment
+
+```powershell
+kubectl delete -f k8s/automation.yaml
+```
+
+Expected output:
+
+```text
+deployment.apps "exp9-automation" deleted
+```
+
+## RESULT
+
+The application was successfully automated using Kubernetes Deployment, scaling and self-healing features.
+
+## VIVA QUESTIONS
+
+**1. What is scaling?**
+
+Scaling means increasing or decreasing the number of application replicas.
+
+**2. What is self-healing?**
+
+Kubernetes automatically replaces failed or deleted Pods to maintain the desired state.
+
+**3. What is a replica?**
+
+A replica is an instance of an application Pod.
+
+**4. What does kubectl scale do?**
+
+It changes the number of replicas.
+
+**5. What happens when a Pod is deleted?**
+
+The Deployment controller creates a replacement Pod if the desired replica count is not met.
+
+**6. What is the desired state?**
+
+It is the state specified by the user in the Kubernetes configuration file.

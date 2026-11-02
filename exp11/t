@@ -1,0 +1,215 @@
+## AIM
+To write a simple JavaScript program and test it using the Karate framework.
+
+## THEORY
+
+JavaScript is a programming language used for web development.
+
+Karate is an open-source testing framework used for API testing and automation. It can execute JavaScript functions and verify their results using assertions.
+
+In this experiment:
+- A JavaScript function performs addition.
+- A Karate feature file reads the JavaScript file.
+- Karate executes the function with different inputs.
+- Karate checks whether the actual result matches the expected result.
+
+## STEP 1: Create Experiment 11 Folder
+
+Open VS Code PowerShell and execute:
+
+```powershell
+cd "C:\Users\Dell\Desktop\external"
+
+New-Item -ItemType Directory -Force -Path "exp11"
+
+cd "exp11"
+```
+
+## STEP 2: Create Project Folders
+
+```powershell
+New-Item -ItemType Directory -Force -Path "src\test\java\examples\demo"
+
+New-Item -ItemType Directory -Force -Path "src\test\resources\examples\demo"
+```
+
+## STEP 3: Create pom.xml
+
+```powershell
+@'
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>examples.demo</groupId>
+    <artifactId>exp11-karate-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.intuit.karate</groupId>
+            <artifactId>karate-junit5</artifactId>
+            <version>1.4.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+'@ | Set-Content -Path "pom.xml"
+```
+
+## STEP 4: Create cal.js
+
+Location:
+
+`src/test/resources/examples/demo/cal.js`
+
+```powershell
+@'
+function(a, b) {
+    return a + b;
+}
+'@ | Set-Content -Path "src\test\resources\examples\demo\cal.js"
+```
+
+## STEP 5: Create cal.feature
+
+Location:
+
+`src/test/resources/examples/demo/cal.feature`
+
+```powershell
+@'
+Feature: JavaScript Calculator Testing
+
+  Scenario: Addition of two numbers
+    * def calculator = read('cal.js')
+    * def result = calculator(10, 20)
+    * match result == 30
+
+  Scenario: Addition of another two numbers
+    * def calculator = read('cal.js')
+    * def result = calculator(5, 15)
+    * match result == 20
+'@ | Set-Content -Path "src\test\resources\examples\demo\cal.feature"
+```
+
+## STEP 6: Create KarateTest.java
+
+Location:
+
+`src/test/java/examples/demo/KarateTest.java`
+
+```powershell
+@'
+package examples.demo;
+
+import com.intuit.karate.junit5.Karate;
+
+class KarateTest {
+
+    @Karate.Test
+    Karate testCalculator() {
+        return Karate.run("classpath:examples/demo");
+    }
+}
+'@ | Set-Content -Path "src\test\java\examples\demo\KarateTest.java"
+```
+
+## STEP 7: Check Project Structure
+
+```powershell
+tree /f
+```
+
+Expected structure:
+
+```text
+exp11
+│   pom.xml
+│
+└───src
+    └───test
+        ├───java
+        │   └───examples
+        │       └───demo
+        │               KarateTest.java
+        │
+        └───resources
+            └───examples
+                └───demo
+                        cal.feature
+                        cal.js
+```
+
+## STEP 8: Run Karate Tests
+
+Make sure you are inside the `exp11` folder.
+
+```powershell
+mvn clean test
+```
+
+**Expected output:**
+
+```text
+Tests run: 2
+Failures: 0
+Errors: 0
+
+BUILD SUCCESS
+```
+
+Both JavaScript addition scenarios should pass.
+
+## RESULT
+
+The JavaScript addition function was successfully tested using the Karate framework.
+
+## VIVA QUESTIONS
+
+**1. What is JavaScript?**
+
+JavaScript is a programming language used to create interactive applications.
+
+**2. What is a function?**
+
+A function is a reusable block of code that performs a specific task.
+
+**3. What is Karate used for?**
+
+Karate is an open-source framework used for API testing and automation.
+
+**4. What is match in Karate?**
+
+It checks whether actual and expected values match.
+
+**5. What is read() in Karate?**
+
+It reads a file and makes its contents available for use in a Karate test.
+
+**6. What is a feature file?**
+
+A feature file contains test scenarios written using Gherkin syntax.
+
+**7. What is Maven?**
+
+Maven is a build automation and dependency management tool used for Java projects.
